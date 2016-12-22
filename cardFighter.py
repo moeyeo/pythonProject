@@ -4,7 +4,8 @@ from random import randint
  
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
-
+bg = arcade.sound.load_sound('sounds/bg.wav')
+block = arcade.sound.load_sound('sounds/block.wav')
 
 
 class GameWindow(arcade.Window):
@@ -19,6 +20,7 @@ class GameWindow(arcade.Window):
         self.block = arcade.Sprite('img/blockcard.png')
         self.empty = arcade.Sprite('img/emptycard.png')
         self.bg.set_position(500, 300)
+        bg.play()
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
