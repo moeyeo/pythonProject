@@ -4,18 +4,13 @@ from random import randint
  
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
-a = randint(-1,1)
-s = randint(-1,1)
-d = randint(-1,1)
+
 b = randint(-1,1)
-game = 0
 
 
 class GameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
-
-        arcade.set_background_color(arcade.color.BLACK)
         self.bg = arcade.Sprite('img/bg.png')
         self.attack_s = arcade.Sprite('img/attack_s.png')
         self.block_s = arcade.Sprite('img/block_s.png')
@@ -36,90 +31,109 @@ class GameWindow(arcade.Window):
         arcade.draw_text("Your Life : "+str(self.world.life_player),
                          self.width - 320, self.height - 30,
                          arcade.color.WHITE, 15)
-        arcade.draw_text("Bot's Life : "+str(self.world.life_bot),
+        arcade.draw_text("P1's Life : "+str(self.world.life_bot),
                          205, self.height - 30,
                          arcade.color.WHITE, 15)
-
-        if self.world.A == 1:
+        
+        A = self.world.A
+        S = self.world.S
+        D = self.world.D
+        print(S)
+        
+        if A == 1:
             self.block_s.set_position(797,455)
             self.block_s.draw()
-        if self.world.A == -1:
+        if A == -1:
             self.attack_s.set_position(797,455)
             self.attack_s.draw()
-        if self.world.A == 0:
+        if A == 0:
             self.empty_s.set_position(797,455)
             self.empty_s.draw()
 
-        if self.world.S == 1:
+        if S == 1:
             self.block_s.set_position(797,305)
             self.block_s.draw()
-        if self.world.S == -1:
+        if S == -1:
             self.attack_s.set_position(797,305)
             self.attack_s.draw()
-        if self.world.S == 0:
+        if S == 0:
             self.empty_s.set_position(797,305)
             self.empty_s.draw()
 
-        if self.world.D== 1:
+        if D == 1:
             self.block_s.set_position(797,155)
             self.block_s.draw()
-        if self.world.D== -1:
+        if D == -1:
             self.attack_s.set_position(797,155)
             self.attack_s.draw()
-        if self.world.D == 0:
+        if D  == 0:
             self.empty_s.set_position(797,155)
             self.empty_s.draw()
         
-        if game == 1:
+        if self.world.game == 1:
             if self.world.B == 1:
-                self.block_s.set_position(797,155)
-                self.block_s.draw()
+                self.block.set_position(300,300)
+                self.block.draw()
             if self.world.B == -1:
-                self.attack_s.set_position(797,155)
-                self.attack_s.draw()
+                self.attack.set_position(300,300)
+                self.attack.draw()
             if self.world.B == 0:
-                self.empty_s.set_position(797,155)
-                self.empty_s.draw()
+                self.empty.set_position(300,300)
+                self.empty.draw()
             if self.world.P == 1:
-                self.block_s.set_position(797,155)
-                self.block_s.draw()
+                self.block.set_position(700,300)
+                self.block.draw()
             if self.world.P == -1:
-                self.attack_s.set_position(797,155)
-                self.attack_s.draw()
+                self.attack.set_position(700,300)
+                self.attack.draw()
             if self.world.P == 0:
-                self.empty_s.set_position(797,155)
-                self.empty_s.draw()
-                        
+                self.empty.set_position(700,300)
+                self.empty.draw()
+            arcade.draw_text("Press SPACE to continued",
+                         380, 50,
+                         arcade.color.WHITE, 15)
+            
+        if self.world.life_bot == 0:
+            arcade.draw_text("YOU WIN",
+                         330, 300,
+                         arcade.color.WHITE, 50)
+        
+        if self.world.life_player == 0:
+            arcade.draw_text("YOU LOSE",
+                         330, 300,
+                         arcade.color.WHITE, 50)
 
+                        
 
 class World:
     def __init__(self):
         super().__init__()
-        self.A = a
-        self.S = s
-        self.D = d
-        self.B = b
+        self.A = -1
+        self.S = 0
+        self.D = 1
+        self.B = randint(-1,1)
         self.P = -99
         self.life_bot = 3
         self.life_player = 3
+        self.game = 0
 
     def on_key_press(self, key, key_modifiers):
-        if game == 0:
+        if self.game == 0:
             if key == arcade.key.A:
                 self.P = self.A
                 self.A = randint(-1,1)
-                self.game = 1
+                game = 1
             elif key == arcade.key.S:
                 self.P = self.S
                 self.S = randint(-1,1)
-                self.game = 1
+                game = 1
             elif key == arcade.key.D:
                 self.P = self.D
                 self.D = randint(-1,1)
-                self.game = 1
-        if game == 1:
+                game = 1
+        if self.game == 1:
             if key == arcade.key.SPACE:
-                self.game = 0
+                game = 0
 
     def fight(Bot,Player):
         result = Bot-Player
