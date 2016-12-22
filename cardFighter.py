@@ -93,14 +93,24 @@ class GameWindow(arcade.Window):
                          arcade.color.WHITE, 15)
             
         if self.world.life_bot == 0:
+            self.world.game = 2
             arcade.draw_text("YOU WIN",
                          330, 300,
-                         arcade.color.WHITE, 50)
+                         arcade.color.WHITE, 55)
+            arcade.draw_text("Press SPACE to play again",
+                         375, 200,
+                         arcade.color.WHITE, 15)
+            self.life_bot = 3
+            self.life_player = 3
         
         if self.world.life_player == 0:
+            self.world.game = 2
             arcade.draw_text("YOU LOSE",
                          330, 300,
-                         arcade.color.WHITE, 50)
+                         arcade.color.WHITE, 55)
+            arcade.draw_text("Press SPACE to play again",
+                         375, 200,
+                         arcade.color.WHITE, 15)
 
                         
 
@@ -117,6 +127,10 @@ class World:
         self.game = 0
 
     def on_key_press(self, key, key_modifiers):
+        if key == arcade.key.P:
+            self.life_bot = 0
+        if key == arcade.key.L:
+            self.life_player = 0
         if self.game == 0:
             if key == arcade.key.A:
                 self.P = self.A
@@ -139,6 +153,17 @@ class World:
         if self.game == 1:
             if key == arcade.key.SPACE:
                 self.game = 0
+        if self.game == 2:
+            if key == arcade.key.SPACE:
+                self.A = randint(-1,1)
+                self.S = randint(-1,1)
+                self.D = randint(-1,1)
+                self.B = randint(-1,1)
+                self.P = -99
+                self.game = 0
+                self.life_bot = 3
+                self.life_player = 3
+                
 
     def fight(self,Bot,Player):
         print(Bot)
