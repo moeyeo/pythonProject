@@ -5,11 +5,11 @@ from random import randint
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 
-b = randint(-1,1)
 
 
 class GameWindow(arcade.Window):
     def __init__(self, width, height):
+        self.world = World()
         super().__init__(width, height)
         self.bg = arcade.Sprite('img/bg.png')
         self.attack_s = arcade.Sprite('img/attack_s.png')
@@ -25,9 +25,7 @@ class GameWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.world = World()
         self.bg.draw()
-
         arcade.draw_text("Your Life : "+str(self.world.life_player),
                          self.width - 320, self.height - 30,
                          arcade.color.WHITE, 15)
@@ -38,7 +36,6 @@ class GameWindow(arcade.Window):
         A = self.world.A
         S = self.world.S
         D = self.world.D
-        print(S)
         
         if A == 1:
             self.block_s.set_position(797,455)
@@ -80,6 +77,7 @@ class GameWindow(arcade.Window):
             if self.world.B == 0:
                 self.empty.set_position(300,300)
                 self.empty.draw()
+
             if self.world.P == 1:
                 self.block.set_position(700,300)
                 self.block.draw()
@@ -89,6 +87,7 @@ class GameWindow(arcade.Window):
             if self.world.P == 0:
                 self.empty.set_position(700,300)
                 self.empty.draw()
+
             arcade.draw_text("Press SPACE to continued",
                          380, 50,
                          arcade.color.WHITE, 15)
@@ -108,9 +107,9 @@ class GameWindow(arcade.Window):
 class World:
     def __init__(self):
         super().__init__()
-        self.A = -1
-        self.S = 0
-        self.D = 1
+        self.A = randint(-1,1)
+        self.S = randint(-1,1)
+        self.D = randint(-1,1)
         self.B = randint(-1,1)
         self.P = -99
         self.life_bot = 3
@@ -121,30 +120,36 @@ class World:
         if self.game == 0:
             if key == arcade.key.A:
                 self.P = self.A
+                self.B = randint(-1,1)
+                self.fight(self.B,self.P)
                 self.A = randint(-1,1)
-                game = 1
+                self.game = 1
             elif key == arcade.key.S:
                 self.P = self.S
+                self.B = randint(-1,1)
+                self.fight(self.B,self.P)
                 self.S = randint(-1,1)
-                game = 1
+                self.game = 1
             elif key == arcade.key.D:
                 self.P = self.D
+                self.B = randint(-1,1)
+                self.fight(self.B,self.P)
                 self.D = randint(-1,1)
-                game = 1
+                self.game = 1
         if self.game == 1:
             if key == arcade.key.SPACE:
-                game = 0
+                self.game = 0
 
-    def fight(Bot,Player):
-        result = Bot-Player
-        if result == 1:
-            self.life_bot -= 1
-            self.B = randint(-1,1)
+    def fight(self,Bot,Player):
+        print(Bot)
+        print(Player)
+        result = Player+Bot
         if result == -1:
-            self.life_player -= 1
-            self.B = randint(-1,1)
-        if result == 0:
-            self.B = randint(-1,1)
+            if Player == -1:
+                self.life_bot -=1
+            else:
+                self.life_player -= 1
+        
 
 
 if __name__ == '__main__':
