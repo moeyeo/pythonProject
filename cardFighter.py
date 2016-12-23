@@ -1,12 +1,11 @@
 import arcade
 import arcade.key
+import time
 from random import randint
  
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
-bg = arcade.sound.load_sound('sounds/bg.wav')
-block = arcade.sound.load_sound('sounds/block.wav')
-
+theme = arcade.sound.load_sound('sounds/bg.wav')
 
 class GameWindow(arcade.Window):
     def __init__(self, width, height):
@@ -20,10 +19,18 @@ class GameWindow(arcade.Window):
         self.block = arcade.Sprite('img/blockcard.png')
         self.empty = arcade.Sprite('img/emptycard.png')
         self.bg.set_position(500, 300)
-        bg.play()
+        theme.play()
+        time=0
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
+    
+    def animate(self,delta):
+        self.time += delta
+        print(self.time)
+        if(self.time>50):
+            theme.play()
+            self.time = 0
 
     def on_draw(self):
         arcade.start_render()
@@ -127,6 +134,8 @@ class World:
         self.life_bot = 3
         self.life_player = 3
         self.game = 0
+        self.time = 0
+        
 
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.P:
@@ -176,8 +185,6 @@ class World:
                 self.life_bot -=1
             else:
                 self.life_player -= 1
-        
-
 
 if __name__ == '__main__':
     window = GameWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
