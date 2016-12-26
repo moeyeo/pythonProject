@@ -176,8 +176,6 @@ class World:
                 
 
     def fight(self,Bot,Player):
-        print(Bot)
-        print(Player)
         result = Player+Bot
         if result == -1:
             if Player == -1:
