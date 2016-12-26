@@ -20,14 +20,13 @@ class GameWindow(arcade.Window):
         self.empty = arcade.Sprite('img/emptycard.png')
         self.bg.set_position(500, 300)
         theme.play()
-        time=0
+        self.time=0
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
     
     def animate(self,delta):
         self.time += delta
-        print(self.time)
         if(self.time>50):
             theme.play()
             self.time = 0
